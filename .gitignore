@@ -1,0 +1,12 @@
+.idea/
+.vscode/
+node_modules/
+dist/
+tmp/
+temp/
+logs/
+*.log
+**/dump.rdb
+**/.DS_Store
+config.json
+run.sh
