@@ -1,0 +1,8 @@
+export BIANAN_APIKEY=''
+export BIANAN_SECRET=''
+export CCXT_MONITOR_WXGROUPIDS=''
+export CCXT_WX_SERVER=''
+export CCXT_ROBOTID=''
+export CCXT_ROBOTTOKEN=''
+
+node ./dist/index.js
