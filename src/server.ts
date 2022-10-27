@@ -142,7 +142,7 @@ const run = async () => {
         ctx.body = 'ok';
     });
 
-    router.post('/', async (ctx: ParameterizedContext) => {
+    router.get('/', async (ctx: ParameterizedContext) => {
         const result = {};
         priceCache.forEach((v, k) => {
             result[k] = v[0];
