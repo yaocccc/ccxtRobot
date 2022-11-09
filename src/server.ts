@@ -5,7 +5,7 @@ import Router from 'koa-router';
 import { get_dynamic_config, set_dynamic_config, static_config } from './config';
 import { sendMessage } from './wxClinet';
 import { client } from './ccxtClient';
-import { trendCache, priceCache } from './monitor';
+import { trendCache, priceCache, monitorConsumer } from './monitor';
 
 export const createRequestMonitor = (bodyParser: Middleware): Middleware => {
     return async (ctx: ParameterizedContext, next: () => Promise<any>) => {
@@ -143,6 +143,7 @@ const run = async () => {
     });
 
     router.get('/', async (ctx: ParameterizedContext) => {
+        await monitorConsumer();
         const result = {};
         priceCache.forEach((v, k) => {
             result[k] = v[0];

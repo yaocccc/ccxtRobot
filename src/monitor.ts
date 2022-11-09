@@ -156,7 +156,9 @@ const syncCache = async () => {
 };
 syncCache();
 
+let lasttime = 0;
 const consumer = async () => {
+    lasttime = Date.now();
     const symbols = get_dynamic_config('symbols');
     for (const symbol of symbols) {
         try {
@@ -193,8 +195,8 @@ const consumer = async () => {
 };
 
 const run = async () => {
-    await consumer();
-    await sleep(30 * 1000);
+    if (Date.now() - lasttime > 1000 * 25) await consumer();
+    await sleep(5 * 1000);
     run();
 };
 
