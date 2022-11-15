@@ -21,14 +21,16 @@ const parseRss = (username: string, rssData: any) => {
     return datas;
 };
 
-const getRss = async (url: string, time: number) => {
+const getRss = async (url: string, time: number, firstTime = false) => {
     console.log('开始获取RSS', url);
     try {
         const rssData = await RSSHub.request(url).then((res) => parseRss(url, res));
-        for (const item of rssData) {
-            const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', item.link].join('\n');
-            for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
-                await sendMessage(msg, group_wxid);
+        if (!firstTime) {
+            for (const item of rssData) {
+                const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', item.link].join('\n');
+                for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
+                    await sendMessage(msg, group_wxid);
+                }
             }
         }
     } catch (e) {
@@ -43,10 +45,10 @@ RSSHub.init({
     CACHE_TYPE: null,
 });
 const run = async () => {
-    getRss('/twitter/user/cz_binance/excludeReplies=1&count=3', 1000 * 10);
-    getRss('/twitter/user/elonmusk/excludeReplies=1&count=3', 1000 * 10);
-    getRss('/twitter/user/binancezh/excludeReplies=1&count=3', 1000 * 10);
-    getRss('/twitter/user/justinsuntron/excludeReplies=1&count=3', 1000 * 10);
+    getRss('/twitter/user/cz_binance/excludeReplies=1&count=3', 1000 * 10, true);
+    getRss('/twitter/user/elonmusk/excludeReplies=1&count=3', 1000 * 10, true);
+    getRss('/twitter/user/binancezh/excludeReplies=1&count=3', 1000 * 10, true);
+    getRss('/twitter/user/justinsuntron/excludeReplies=1&count=3', 1000 * 10, true);
     // getRss('/weibo/user/2622472937/', 1000 * 60);
 };
 
