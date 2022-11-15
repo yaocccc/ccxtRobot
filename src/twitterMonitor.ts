@@ -38,7 +38,11 @@ RSSHub.init({
     CACHE_TYPE: null,
 });
 const run = async () => {
-    await Promise.all([getTwitter('cz_binance'), getTwitter('elonmusk')]);
+    await Promise.all([
+        getTwitter('cz_binance'), 
+        getTwitter('elonmusk'),
+        getTwitter('binancezh'),
+    ]);
     await sleep(10000)
     run();
 };
