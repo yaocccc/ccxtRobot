@@ -4,8 +4,7 @@ import bodyParser from 'koa-body';
 import Router from 'koa-router';
 import { get_dynamic_config, set_dynamic_config, static_config } from './config';
 import { sendMessage } from './wxClinet';
-import { client } from './ccxtClient';
-import { trendCache, priceCache, monitorConsumer } from './monitor';
+import { trendCache, priceCache, monitorConsumer, client } from './ccxtMonitor';
 
 export const createRequestMonitor = (bodyParser: Middleware): Middleware => {
     return async (ctx: ParameterizedContext, next: () => Promise<any>) => {

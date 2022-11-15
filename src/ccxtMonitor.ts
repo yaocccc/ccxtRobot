@@ -3,7 +3,16 @@ import { getIndicators, getIndicatorTime, Indicator } from './parseIndicator';
 import { sleep, retry } from './utils';
 import { monitorMsg } from './wxClinet';
 import { get_dynamic_config } from './config';
-import { client } from './ccxtClient';
+import ccxt from 'ccxt';
+import { static_config } from './config';
+
+const client = new ccxt.binance({
+    apiKey: static_config.bianan_apikey,
+    secret: static_config.bianan_secret,
+    options: {
+        defaultMarket: 'future',
+    },
+});
 
 // [count, ok, left, right]
 const filterCount = (indicators: Indicator[], type: 'HIGN_DEAD' | 'LOW_GOLD', kCount: number): [number, boolean, Indicator, Indicator] => {
@@ -200,4 +209,4 @@ const run = async () => {
     run();
 };
 
-export { run as runMonitor, consumer as monitorConsumer, trendCache, priceCache };
+export { run as runCcxtMonitor, consumer as monitorConsumer, trendCache, priceCache, client };
