@@ -41,6 +41,7 @@ const run = async () => {
         getTwitter('cz_binance'), 
         getTwitter('elonmusk'),
         getTwitter('binancezh'),
+        getTwitter('justinsuntron')
     ]);
     await sleep(10000)
     run();
