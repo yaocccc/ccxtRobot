@@ -7,6 +7,7 @@ const cached = new Set();
 const parseRss = (username: string, rssData: any) => {
     const datas = rssData.item
         .filter((item) => !cached.has(item.author + '|' + item.title))
+        .slice(0, 3)
         .map((item) => {
             cached.add(item.author + '|' + item.title);
             return {
@@ -25,7 +26,7 @@ const getRss = async (url: string, time: number) => {
     try {
         const rssData = await RSSHub.request(url).then((res) => parseRss(url, res));
         for (const item of rssData) {
-            const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`].join('\n');
+            const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', item.link].join('\n');
             for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
                 await sendMessage(msg, group_wxid);
             }
