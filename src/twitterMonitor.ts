@@ -30,8 +30,9 @@ const getTwitter = async (username: string) => {
                 await sendMessage([`推特监控: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`].join('\n'), group_wxid);
             }
         }
-
-    } catch (e) {}
+    } catch (e) {
+        console.log(e.stack);
+    }
 }
 
 RSSHub.init({
