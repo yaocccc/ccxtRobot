@@ -25,7 +25,7 @@ const getRss = async (url: string, time: number, firstTime = false) => {
     console.log('开始获取RSS', url);
     try {
         const rssData = await RSSHub.request(url).then((res) => parseRss(url, res));
-        if (!firstTime || 1) {
+        if (!firstTime) {
             for (const item of rssData) {
                 const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', item.link].join('\n');
                 for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
