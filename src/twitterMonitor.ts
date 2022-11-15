@@ -6,9 +6,7 @@ import { sleep } from './utils';
 const cached = new Set();
 const parseTwitter = (username: string, twitterData: any) => {
     const datas = twitterData.item
-        .filter((item) => !item.title.startsWith('Re @'))
         .filter((item) => !cached.has(username + '|' + item.title))
-        .slice(0, 5)
         .map((item) => {
             cached.add(username + '|' + item.title);
             return {
@@ -24,7 +22,7 @@ const parseTwitter = (username: string, twitterData: any) => {
 
 const getTwitter = async (username: string) => {
     try {
-        const twitterData = await RSSHub.request(`/twitter/user/${username}/`).then((res) => parseTwitter(username, res));
+        const twitterData = await RSSHub.request(`/twitter/user/${username}/excludeReplies=1&count=5`).then((res) => parseTwitter(username, res));
         for (const item of twitterData) {
             for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
                 await sendMessage([`推特监控: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`].join('\n'), group_wxid);
@@ -47,6 +45,8 @@ const run = async () => {
     await sleep(10000)
     run();
 };
+
+run()
 
 export {
     run as runTwitterMonitor
