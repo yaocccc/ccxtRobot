@@ -25,12 +25,15 @@ const getRss = async (url: string, time: number, firstTime = false) => {
     console.log('开始获取RSS', url);
     try {
         const rssData = await RSSHub.request(url).then((res) => parseRss(url, res));
-        if (!firstTime) {
+        if (!firstTime || 1) {
             for (const item of rssData) {
                 const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', item.link].join('\n');
                 for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
                     await sendMessage(msg, group_wxid);
                 }
+
+                // 多给这个群发一路信号 19593650742@chatroom
+                await sendMessage(msg, '19593650742@chatroom');
             }
         }
     } catch (e) {
