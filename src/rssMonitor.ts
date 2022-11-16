@@ -1,6 +1,6 @@
 import * as RSSHub from 'rsshub';
 import fs from 'fs';
-import path from 'path';
+import * as uuid from 'uuid';
 import { get_dynamic_config, static_config } from './config';
 import { sendMessage } from './wxClinet';
 import { sleep } from './utils';
@@ -36,7 +36,7 @@ const getRss = async (url: string, time: number, firstTime: boolean) => {
         console.log(rssData)
         if (!firstTime) {
             for (const item of rssData) {
-                const id = Date.now();
+                const id = uuid.v4();
                 const url = `http://tw.ccxx.icu/${id}.html`;
                 fs.writeFileSync(`/www/tw/${id}.html`, item.html); // 写入html文件
                 const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', url].join('\n');
