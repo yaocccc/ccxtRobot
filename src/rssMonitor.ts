@@ -18,6 +18,11 @@ const parseRss = (rssData: any) => {
                 time: new Date(item.pubDate).toLocaleString('zh', {hour12: false}),
                 link: item.link,
                 html: `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                    </head>
                     <a href='${item.link}'>Link</a>
                     <h2>${item.title}</h2>
                     <h3>${item.author}</h3> 
@@ -62,7 +67,7 @@ RSSHub.init({
 const run = async () => {
     getRss('/twitter/user/cz_binance/excludeReplies=1&count=3', 1000 * 10, true);
     getRss('/twitter/user/elonmusk/excludeReplies=1&count=3', 1000 * 10, true);
-    getRss('/twitter/user/binancezh/excludeReplies=1&count=3', 1000 * 10, true);
+    // getRss('/twitter/user/binancezh/excludeReplies=1&count=3', 1000 * 10, true);
     getRss('/twitter/user/VitalikButerin/excludeReplies=1&count=3', 1000 * 10, true);
     getRss('/twitter/user/SBF_FTX/excludeReplies=1&count=3', 1000 * 10, true);
     // getRss('/weibo/user/2622472937/', 1000 * 60);
