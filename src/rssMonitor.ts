@@ -21,7 +21,7 @@ const parseRss = (username: string, rssData: any) => {
     return datas;
 };
 
-const getRss = async (url: string, time: number, user: string, firstTime = false) => {
+const getRss = async (url: string, time: number, user: string, firstTime: boolean) => {
     console.log('开始获取RSS', url);
     try {
         const rssData = await RSSHub.request(url).then((res) => parseRss(url, res));
@@ -42,7 +42,7 @@ const getRss = async (url: string, time: number, user: string, firstTime = false
     }
 
     await sleep(time);
-    getRss(url, time, user);
+    getRss(url, time, user, false);
 }
 
 RSSHub.init({
@@ -57,8 +57,6 @@ const run = async () => {
     getRss('/blockbeats/flash', 1000 * 10, '律动快讯', true);
     // getRss('/weibo/user/2622472937/', 1000 * 60);
 };
-
-run();
 
 export {
     run as runRssMonitor
