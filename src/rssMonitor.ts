@@ -54,6 +54,7 @@ const run = async () => {
     getRss('/twitter/user/binancezh/excludeReplies=1&count=3', 1000 * 10, '', true);
     getRss('/twitter/user/justinsuntron/excludeReplies=1&count=3', 1000 * 10, '', true);
     getRss('/twitter/user/VitalikButerin/excludeReplies=1&count=3', 1000 * 10, '', true);
+    getRss('/twitter/SBF_FTX/VitalikButerin/excludeReplies=1&count=3', 1000 * 10, '', true);
     // getRss('/weibo/user/2622472937/', 1000 * 60);
 };
 
