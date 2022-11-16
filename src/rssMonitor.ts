@@ -21,16 +21,17 @@ const parseRss = (username: string, rssData: any) => {
     return datas;
 };
 
-const getRss = async (url: string, time: number, firstTime = false) => {
+const getRss = async (url: string, time: number, user: string, firstTime = false) => {
     console.log('开始获取RSS', url);
     try {
         const rssData = await RSSHub.request(url).then((res) => parseRss(url, res));
+        console.log(rssData)
         if (!firstTime) {
             for (const item of rssData) {
-                const msg = [`用户: ${item.user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', item.link].join('\n');
-                for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
-                    await sendMessage(msg, group_wxid);
-                }
+                const msg = [`用户: ${item.user || user}`, `标题: ${item.title}`, `时间: ${item.time}`, '', item.link].join('\n');
+                // for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
+                //     await sendMessage(msg, group_wxid);
+                // }
 
                 // 多给这个群发一路信号 19593650742@chatroom
                 await sendMessage(msg, '19593650742@chatroom');
@@ -41,20 +42,23 @@ const getRss = async (url: string, time: number, firstTime = false) => {
     }
 
     await sleep(time);
-    getRss(url, time);
+    getRss(url, time, user);
 }
 
 RSSHub.init({
     CACHE_TYPE: null,
 });
 const run = async () => {
-    getRss('/twitter/user/cz_binance/excludeReplies=1&count=3', 1000 * 10, true);
-    getRss('/twitter/user/elonmusk/excludeReplies=1&count=3', 1000 * 10, true);
-    getRss('/twitter/user/binancezh/excludeReplies=1&count=3', 1000 * 10, true);
-    getRss('/twitter/user/justinsuntron/excludeReplies=1&count=3', 1000 * 10, true);
-    getRss('/twitter/user/VitalikButerin/excludeReplies=1&count=3', 1000 * 10, true);
+    getRss('/twitter/user/cz_binance/excludeReplies=1&count=3', 1000 * 10, '', true);
+    getRss('/twitter/user/elonmusk/excludeReplies=1&count=3', 1000 * 10, '', true);
+    getRss('/twitter/user/binancezh/excludeReplies=1&count=3', 1000 * 10, '', true);
+    getRss('/twitter/user/justinsuntron/excludeReplies=1&count=3', 1000 * 10, '', true);
+    getRss('/twitter/user/VitalikButerin/excludeReplies=1&count=3', 1000 * 10, '', true);
+    getRss('/blockbeats/flash', 1000 * 10, '律动快讯', true);
     // getRss('/weibo/user/2622472937/', 1000 * 60);
 };
+
+run();
 
 export {
     run as runRssMonitor
