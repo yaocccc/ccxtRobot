@@ -21,14 +21,26 @@ const parseRss = (rssData: any) => {
                 html: `
                     <!DOCTYPE html>
                     <html lang="en">
-                    <head>
-                        <meta charset="UTF-8">
-                    </head>
-                    <a href='${item.link}'>Link</a>
-                    <h2>${item.title}</h2>
-                    <h3>${item.author}</h3> 
-                    <h3>${new Date(item.pubDate).toLocaleString('zh', {hour12: false})}</h3>
-                    <div>${item.description}</div>
+                      <head>
+                        <meta charset="UTF-8" />
+                        <style>
+                          body,html, div, p { padding: 0px; margin: 0;  }
+                          .title { width: 710px; margin: 0 auto;  padding: 20px; }
+                          .title h2, .title h3 { margin: 16px 0; }
+                          .content { width: 710px; margin: 0 auto; padding: 20px; }
+                          .content video { width: 710px; }
+                          .content .link { margin: 10px 0; display: block; }
+                        </style>
+                        <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.2/??flexible_css.js,flexible.js" ></script>
+                      </head>
+                      <div class="title">
+                        <a href="${item.link}">Link</a>
+                        <h2>${item.title}</h2>
+                        <h3>${item.author}</h3> 
+                        <h3>${new Date(item.pubDate).toLocaleString('zh', {hour12: false})}</h3>
+                      </div>
+                      <div class="content">${item.description}</div>
+                    </html>
                 `
             };
         });
