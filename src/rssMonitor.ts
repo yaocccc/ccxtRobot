@@ -1,8 +1,10 @@
 import * as RSSHub from 'rsshub';
+import { ethers, providers } from 'ethers';
+import axios from 'axios';
 import fs from 'fs';
 import * as uuid from 'uuid';
 import { get_dynamic_config, static_config } from './config';
-import { sendMessage } from './wxClinet';
+import { monitorMsg, sendMessage } from './wxClinet';
 import { sleep } from './utils';
 
 const runtime = Date.now();
@@ -71,6 +73,28 @@ const getRss = async (url: string) => {
     getRss(url);
 }
 
+let eth = -1;
+const monitorEth = async () => {
+    try {
+        const _eth = await axios.get(`https://api.etherscan.io/api/?module=account&action=balance&address=0x59abf3837fa962d6853b4cc0a19513aa031fd32b&tag=latest&apikey=VR9IVVURYC4N5SW2ZWQ6VQWHT7FPAVVYEP`).then((r) => Number(ethers.utils.formatEther(r.data.result)))
+        console.log(_eth)
+        // if (eth === -1) {
+        //     eth = _eth;
+        // }
+        if (eth != _eth) {
+            const msg = `FTX黑客账户ETH余额发生变动: \n 从 ${eth} 变为 ${_eth}`;
+            for (const group_wxid of static_config.ccxt_monitor_wxgroupids) {
+                await sendMessage(msg, group_wxid);
+            }
+            eth = _eth;
+        }
+    } catch (e) {
+    }
+
+    await sleep(20 * 1000);
+}
+
+
 RSSHub.init({
     CACHE_TYPE: null,
 });
@@ -81,6 +105,7 @@ const run = async () => {
     getRss('/twitter/user/VitalikButerin/excludeReplies=1&count=3');
     getRss('/twitter/user/SBF_FTX/excludeReplies=1&count=3');
     // getRss('/weibo/user/2622472937/');
+    monitorEth();
 };
 
 export {
